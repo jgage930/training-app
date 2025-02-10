@@ -9,11 +9,18 @@ import (
 func main() {
 	mux := http.NewServeMux()
 
+	// Static files Routes
 	fs := http.FileServer(http.Dir("./public"))
 	mux.Handle("/", fs)
 
+	// View Routes
 	mux.HandleFunc("/home", Index)
 
+	// Api Routes
+	workoutHandler := api.WorkoutHandler{}
+	api.WorkoutRouter(&workoutHandler, mux)
+
+	// Global middleware
 	server := api.LoggingMiddleware(mux)
 
 	http.ListenAndServe(":8080", server)
