@@ -20,9 +20,17 @@ function Home() {
 
   const handleSubmit = () => {
     console.log("Submitted");
-    console.log(workout)
+
+    fetch('/workout', {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(workout)
+    })
+    .then((data) => console.log("Success"))
+    .catch((error) => console.error("Error:", error));
   }
-    
 
   const handleChange = (key, value) => {
     setWorkout((prevWorkout) => ({ ...prevWorkout, [key]: value}));

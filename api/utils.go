@@ -3,7 +3,6 @@ package api
 import (
 	"encoding/json"
 	"io"
-	"log"
 	"net/http"
 )
 
@@ -16,8 +15,6 @@ func ReadBody[T Payload](buf *T, w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to read request body.", http.StatusBadRequest)
 		return
 	}
-
-	log.Print(body)
 
 	if err := json.Unmarshal(body, &buf); err != nil {
 		http.Error(w, "Invalid Json Body", http.StatusUnprocessableEntity)

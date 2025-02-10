@@ -8,7 +8,7 @@ import (
 type WorkoutHandler struct{}
 
 func WorkoutRouter(h *WorkoutHandler, mux *http.ServeMux) {
-	mux.HandleFunc("POST /workout", nil)
+	mux.HandleFunc("POST /workout", h.postWorkout)
 }
 
 type WorkoutCreate struct {
