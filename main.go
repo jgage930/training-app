@@ -7,6 +7,10 @@ import (
 )
 
 func main() {
+	// Database
+	db := api.SetupDB()
+
+	// Server
 	mux := http.NewServeMux()
 
 	// Static files Routes
@@ -17,7 +21,7 @@ func main() {
 	mux.HandleFunc("/home", Index)
 
 	// Api Routes
-	workoutHandler := api.WorkoutHandler{}
+	workoutHandler := api.WorkoutHandler{DB: db}
 	api.WorkoutRouter(&workoutHandler, mux)
 
 	// Global middleware

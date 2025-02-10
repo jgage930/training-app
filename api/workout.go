@@ -1,11 +1,14 @@
 package api
 
 import (
+	"github.com/jmoiron/sqlx"
 	"net/http"
 	"time"
 )
 
-type WorkoutHandler struct{}
+type WorkoutHandler struct {
+	DB *sqlx.DB
+}
 
 func WorkoutRouter(h *WorkoutHandler, mux *http.ServeMux) {
 	mux.HandleFunc("POST /workout", h.postWorkout)
