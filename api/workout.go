@@ -32,8 +32,4 @@ func (h *WorkoutHandler) postWorkout(w http.ResponseWriter, r *http.Request) {
 		payload.Description,
 	)
 	tx.Commit()
-
-	w.Write([]byte("Create workout."))
-
-	// Create workout in db.
 }
