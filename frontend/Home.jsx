@@ -16,9 +16,16 @@ function Home() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false); 
 
+  const [workout, setWorkout] = useState({name: defaultWorkoutName(), date: today(), description: ''})
+
   const handleSubmit = () => {
     console.log("Submitted");
-    setOpen(false);
+    console.log(workout)
+  }
+    
+
+  const handleChange = (key, value) => {
+    setWorkout((prevWorkout) => ({ ...prevWorkout, [key]: value}));
   }
 
   return (
@@ -33,9 +40,20 @@ function Home() {
         </Modal.Header>
 
         <Modal.Body>
-          <Input placeholder={ defaultWorkoutName() } /> 
-          <DatePicker defaultValue={ new Date() } format={ dateFormat } />
-          <Input as="textarea" rows={10} placeholder="Description..." />
+          <Input 
+            placeholder={ defaultWorkoutName() } 
+            onChange={(value) => handleChange("name", value)}/> 
+
+          <DatePicker 
+            defaultValue={ new Date() } 
+            format={ dateFormat }  
+            onChange={(value) => handleChange("date", value)}/>
+
+          <Input 
+            as="textarea" 
+            rows={10} 
+            placeholder="Description..." 
+            onChange={(value) => handleChange("description", value)}/>
         </Modal.Body>
 
         <Modal.Footer>
