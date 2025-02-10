@@ -1,14 +1,14 @@
+import 'rsuite/dist/rsuite.min.css';
 import React, { useState } from 'react'
 import { createRoot } from 'react-dom/client';
-import 'rsuite/dist/rsuite.min.css';
 
-
-
+import Home from './Home';
 
 export default function Application() {
   return (
     <>
       <div>Application</div>
+      <Home />
     </>
   )
 }
