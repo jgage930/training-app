@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, ButtonToolbar, Placeholder } from 'rsuite';
-
+import { Modal, Button, ButtonToolbar, Placeholder, Input, DatePicker } from 'rsuite';
 
 function Home() {
   const [open, setOpen] = React.useState(false);
@@ -10,19 +9,24 @@ function Home() {
   return (
     <>
       <ButtonToolbar>
-        <Button onClick={handleOpen}> Open</Button>
+        <Button onClick={handleOpen}> Schedule Workout </Button>
       </ButtonToolbar>
 
       <Modal open={open} onClose={handleClose}>
         <Modal.Header>
-          <Modal.Title>Modal Title</Modal.Title>
+          <Modal.Title> Schedule a Workout </Modal.Title>
         </Modal.Header>
+
         <Modal.Body>
-          <Placeholder.Paragraph />
+          <Input placeholder="Name"></Input> 
+          <DatePicker></DatePicker>
+          <Label>Workout Description</Label>
+          <Input as="textarea" rows={10}> </Input>
         </Modal.Body>
+
         <Modal.Footer>
           <Button onClick={handleClose} appearance="primary">
-            Ok
+            Submit
           </Button>
           <Button onClick={handleClose} appearance="subtle">
             Cancel
