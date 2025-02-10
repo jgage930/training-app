@@ -12,5 +12,18 @@ func SetupDB() *sqlx.DB {
 		log.Fatal(err)
 	}
 
+	createTables(db)
 	return db
+}
+
+func createTables(db *sqlx.DB) {
+	query := `
+		CREATE TABLE my_table (
+    	id INTEGER PRIMARY KEY AUTOINCREMENT,
+    	name TEXT NOT NULL,
+    	date DATETIME NOT NULL,
+    	description TEXT
+		);
+	`
+	db.MustExec(query)
 }
