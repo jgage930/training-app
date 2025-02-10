@@ -24,5 +24,16 @@ func (h *WorkoutHandler) postWorkout(w http.ResponseWriter, r *http.Request) {
 	var payload WorkoutCreate
 	ReadBody(&payload, w, r)
 
+	tx := h.DB.MustBegin()
+	tx.MustExec(
+		"INSERT INTO workouts (name, date, description) VALUES ($1, $2, $3)",
+		payload.Name,
+		payload.Date,
+		payload.Description,
+	)
+	tx.Commit()
+
+	w.Write([]byte("Create workout."))
+
 	// Create workout in db.
 }
