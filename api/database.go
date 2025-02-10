@@ -18,7 +18,7 @@ func SetupDB() *sqlx.DB {
 
 func createTables(db *sqlx.DB) {
 	query := `
-		CREATE TABLE workouts (
+		CREATE TABLE IF NOT EXISTS workouts (
     	id INTEGER PRIMARY KEY AUTOINCREMENT,
     	name TEXT NOT NULL,
     	date DATETIME NOT NULL,

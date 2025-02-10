@@ -6,12 +6,20 @@ import (
 	"time"
 )
 
+type Workout struct {
+	Id          int       `db:"id"`
+	Name        string    `db:"name"`
+	Date        time.Time `db:"date"`
+	Description string    `db:"description"`
+}
+
 type WorkoutHandler struct {
 	DB *sqlx.DB
 }
 
 func WorkoutRouter(h *WorkoutHandler, mux *http.ServeMux) {
 	mux.HandleFunc("POST /workout", h.postWorkout)
+	mux.HandleFunc("GET /workout", h.listWorkouts)
 }
 
 type WorkoutCreate struct {
@@ -32,4 +40,10 @@ func (h *WorkoutHandler) postWorkout(w http.ResponseWriter, r *http.Request) {
 		payload.Description,
 	)
 	tx.Commit()
+}
+
+func (h *WorkoutHandler) listWorkouts(w http.ResponseWriter, r *http.Request) {
+	workouts := []Workout{}
+	h.DB.Select(&workouts, "SELECT * from workouts;")
+	Respond(workouts, w)
 }
