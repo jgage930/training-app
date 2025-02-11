@@ -9,9 +9,9 @@ const today = () => {
 
 const isSameDay = (day1, day2) => {
   // Check if the day month and year are equivalent.
-  const day = day1.getDay() == day2.getDay();
-  const month = day1.getMonth() == day2.getMonth();
-  const year = day1.getYear() == day2.getYear();
+  const day = day1.getDate() === day2.getDate();
+  const month = day1.getMonth() === day2.getMonth();
+  const year = day1.getYear() === day2.getYear();
 
   return day && month && year
 }
@@ -22,10 +22,8 @@ const defaultWorkoutName = () => {
 }
 
 function CalendarCell(date, workouts) {
-  const todaysWorkouts = workouts.filter((w) => isSameDay(new Date(w.date), date));
-
-  console.log({date, todaysWorkouts})
-
+  const todaysWorkouts = workouts.filter((w) => isSameDay(w.date, date));
+  
   return (
      <List>
        {todaysWorkouts.map(workout => (
@@ -47,7 +45,10 @@ function WorkoutCalendar() {
     .then((response) => {
       return response.json();
     })
-    .then((workouts) => setWorkouts(workouts));
+    .then((workouts) => {
+        const parsedObjects = workouts.map(w => ({...w, date: new Date(w.date)}));
+        setWorkouts(parsedObjects)
+    });
   }, []);
 
   return <Calendar bordered renderCell={(date) => CalendarCell(date, workouts)} />
