@@ -7,10 +7,10 @@ import (
 )
 
 type Workout struct {
-	Id          int       `db:"id"`
-	Name        string    `db:"name"`
-	Date        time.Time `db:"date"`
-	Description string    `db:"description"`
+	Id          int       `db:"id" json:"id"`
+	Name        string    `db:"name" json:"name"`
+	Date        time.Time `db:"date" json:"date"`
+	Description string    `db:"description" json:"description"`
 }
 
 type WorkoutHandler struct {

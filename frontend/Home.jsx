@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Modal, Button, ButtonToolbar, Placeholder, Input, DatePicker } from 'rsuite';
+import { Modal, Button, ButtonToolbar, Placeholder, Input, DatePicker, Calendar } from 'rsuite';
 
 const dateFormat = 'MM/dd/yyyy';
 
@@ -9,6 +9,10 @@ const today = () => {
 
 const defaultWorkoutName = () => {
   return `Workout ${today().toLocaleDateString("en-US")}`;
+}
+
+function WorkoutCalendar() {
+  return <Calendar bordered />
 }
 
 function Home() {
@@ -73,6 +77,8 @@ function Home() {
           </Button>
         </Modal.Footer>
       </Modal>
+
+      <WorkoutCalendar />
     </>
   )
 }
