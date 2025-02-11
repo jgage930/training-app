@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Modal, Button, ButtonToolbar, Placeholder, Input, DatePicker, Calendar } from 'rsuite';
 
 const dateFormat = 'MM/dd/yyyy';
@@ -12,6 +12,20 @@ const defaultWorkoutName = () => {
 }
 
 function WorkoutCalendar() {
+  const [workouts, setWorkouts] = useState(null);
+  
+  useEffect(() => {
+    fetch('/workout', {
+      method: "GET" 
+    })
+    .then((response) => {
+      return response.json();
+    })
+    .then((workouts) => setWorkouts(workouts));
+  }, []);
+
+  console.log(workouts);
+  
   return <Calendar bordered />
 }
 
