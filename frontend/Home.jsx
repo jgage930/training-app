@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Button, ButtonToolbar, Placeholder, Input, DatePicker, Calendar } from 'rsuite';
+import { Modal, Button, ButtonToolbar, Placeholder, Input, DatePicker, Calendar, List } from 'rsuite';
 
 const dateFormat = 'MM/dd/yyyy';
 
@@ -7,12 +7,38 @@ const today = () => {
   return new Date();
 }
 
+const isSameDay = (day1, day2) => {
+  // Check if the day month and year are equivalent.
+  const day = day1.getDay() == day2.getDay();
+  const month = day1.getMonth() == day2.getMonth();
+  const year = day1.getYear() == day2.getYear();
+
+  return day && month && year
+}
+
 const defaultWorkoutName = () => {
-  return `Workout ${today().toLocaleDateString("en-US")}`;
+  const dateStr = today().toLocaleDateString("en-US");
+  return `Workout ${dateStr}`;
+}
+
+function CalendarCell(date, workouts) {
+  const todaysWorkouts = workouts.filter((w) => isSameDay(new Date(w.date), date));
+
+  console.log({date, todaysWorkouts})
+
+  return (
+     <List>
+       {todaysWorkouts.map(workout => (
+         <List.Item key={workout.id}>
+           <strong>{workout.name}</strong>
+         </List.Item>
+      ))}
+    </List>
+  )
 }
 
 function WorkoutCalendar() {
-  const [workouts, setWorkouts] = useState(null);
+  const [workouts, setWorkouts] = useState([]);
   
   useEffect(() => {
     fetch('/workout', {
@@ -24,9 +50,7 @@ function WorkoutCalendar() {
     .then((workouts) => setWorkouts(workouts));
   }, []);
 
-  console.log(workouts);
-  
-  return <Calendar bordered />
+  return <Calendar bordered renderCell={(date) => CalendarCell(date, workouts)} />
 }
 
 function Home() {
