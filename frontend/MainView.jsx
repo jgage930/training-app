@@ -6,10 +6,12 @@ import CalenderSimpleIcon from '@rsuite/icons/CalenderSimple';
 import GroupIcon from '@rsuite/icons/legacy/Group';
 import LineChartIcon from '@rsuite/icons/LineChart';
 import ArchiveIcon from '@rsuite/icons/Archive';
+import StorageIcon from '@rsuite/icons/Storage';
 
 import WorkoutCalendar from './WorkoutCalendar';
 import ActivityUpload from './ActivityUpload';
 import AnalyzeWorkout from './AnalyzeWorkout';
+import AdminView from './AdminView'
 
 function MainView() {
   // Application Mode
@@ -23,6 +25,8 @@ function MainView() {
         return <AnalyzeWorkout />
       case "upload":
         return <ActivityUpload />
+      case "admin":
+        return <AdminView />
     }
   }
 
@@ -40,6 +44,9 @@ function MainView() {
               </Nav.Item>
               <Nav.Item eventKey="upload" icon={<ArchiveIcon />}>
                 Upload Activities
+              </Nav.Item>
+              <Nav.Item eventKey="admin" icon={<StorageIcon />}>
+                Admin
               </Nav.Item>
             </Nav>
           </Sidenav.Body>
