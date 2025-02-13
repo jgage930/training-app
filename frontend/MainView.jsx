@@ -52,7 +52,7 @@ function MainView() {
           </Sidenav.Body>
         </Sidenav>
       </div> 
-      <div id="content">{renderContent()}</div>
+      <div id="content" style={{ width: 1000 }}>{renderContent()}</div>
     </div>
   )
 }
