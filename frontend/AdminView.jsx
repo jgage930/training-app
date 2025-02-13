@@ -72,7 +72,7 @@ function AdminView() {
 
         <Cell style={{ padding: '6px' }}>
           {rowData => (
-            <Button onClick={() => alert(`id:${rowData.id}`)} color='red'>
+            <Button color='red' onClick={() => fetch(`workout/${rowData.id}`, {method: 'DELETE'})}>
               Delete
             </Button>
           )}
