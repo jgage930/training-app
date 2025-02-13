@@ -23,8 +23,8 @@ const workoutData = [
 function AdminView() {
   // Call endpoint to get workouts from db.
   const [workouts, setWorkouts] = useState(workoutData);
-  
-  useEffect(() => {
+
+  const fetchWorkouts = () => {
     fetch('/workout', { method: "GET" })
     .then((response) => {
       return response.json();
@@ -33,7 +33,13 @@ function AdminView() {
         //const parsedObjects = workouts.map(w => ({...w, date: new Date(w.date)}));
         setWorkouts(workouts)
     });
-  }, []);
+  }
+  
+  useEffect(() => { fetchWorkouts() }, []);
+
+  const handleDelete = (id) => {
+    fetch(`workout/${id}`, {method: 'DELETE'});
+  }
 
   return (
     <Table
@@ -70,7 +76,13 @@ function AdminView() {
 
         <Cell style={{ padding: '6px' }}>
           {rowData => (
-            <Button color='red' onClick={() => fetch(`workout/${rowData.id}`, {method: 'DELETE'})}>
+            <Button 
+              color='red' 
+              onClick={() => {
+                handleDelete(rowData.id);       
+                fetchWorkouts();
+              }
+            }>
               Delete
             </Button>
           )}
