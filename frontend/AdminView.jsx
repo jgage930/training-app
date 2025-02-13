@@ -1,6 +1,6 @@
 import 'rsuite/dist/rsuite.min.css';
 import React, { useState, useEffect } from 'react';
-import { Table } from 'rsuite';
+import { Table, Button } from 'rsuite';
 
 const { Column, HeaderCell, Cell } = Table;
 
@@ -66,6 +66,17 @@ function AdminView() {
       <Column flexGrow={1}>
         <HeaderCell>Description</HeaderCell>
         <Cell dataKey="description" />
+      </Column>
+      <Column width={80} fixed="right">
+        <HeaderCell>Delete</HeaderCell>
+
+        <Cell style={{ padding: '6px' }}>
+          {rowData => (
+            <Button onClick={() => alert(`id:${rowData.id}`)} color='red'>
+              Delete
+            </Button>
+          )}
+        </Cell>
       </Column>
     </Table>
   )
