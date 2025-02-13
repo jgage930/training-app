@@ -25,9 +25,7 @@ function AdminView() {
   const [workouts, setWorkouts] = useState(workoutData);
   
   useEffect(() => {
-    fetch('/workout', {
-      method: "GET" 
-    })
+    fetch('/workout', { method: "GET" })
     .then((response) => {
       return response.json();
     })
