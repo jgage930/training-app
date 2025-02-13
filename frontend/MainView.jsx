@@ -8,7 +8,8 @@ import LineChartIcon from '@rsuite/icons/LineChart';
 import ArchiveIcon from '@rsuite/icons/Archive';
 import StorageIcon from '@rsuite/icons/Storage';
 
-import WorkoutCalendar from './WorkoutCalendar';
+// import WorkoutCalendar from './WorkoutCalendar';
+import Home from './Home'
 import ActivityUpload from './ActivityUpload';
 import AnalyzeWorkout from './AnalyzeWorkout';
 import AdminView from './AdminView'
@@ -20,7 +21,8 @@ function MainView() {
   function renderContent() {
     switch (mode) {
       case "calendar":
-        return <WorkoutCalendar />
+        // return <WorkoutCalendar />
+        return <Home />
       case "analyze":
         return <AnalyzeWorkout />
       case "upload":
