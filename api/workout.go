@@ -20,6 +20,7 @@ type WorkoutHandler struct {
 func WorkoutRouter(h *WorkoutHandler, mux *http.ServeMux) {
 	mux.HandleFunc("POST /workout", h.postWorkout)
 	mux.HandleFunc("GET /workout", h.listWorkouts)
+	mux.HandleFunc("DELETE /workout/{id}", h.deleteWorkout)
 }
 
 type WorkoutCreate struct {
@@ -44,6 +45,14 @@ func (h *WorkoutHandler) postWorkout(w http.ResponseWriter, r *http.Request) {
 
 func (h *WorkoutHandler) listWorkouts(w http.ResponseWriter, r *http.Request) {
 	workouts := []Workout{}
-	h.DB.Select(&workouts, "SELECT * from workouts;")
+	h.DB.Select(&workouts, "SELECT * from workouts")
 	Respond(workouts, w)
+}
+
+func (h *WorkoutHandler) deleteWorkout(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	tx := h.DB.MustBegin()
+	tx.MustExec("DELETE FROM workouts WHERE id = $1", id)
+	tx.Commit()
 }
