@@ -9,10 +9,12 @@ function ActivityUpload() {
 
   const handleSuccess = () => {
     setSuccess(true);
+    setTimeout(() => setSuccess(false), 3000);
   }
 
   const handleError = () => {
     setError(true);
+    setTimeout(() => setError(false), 3000);
   }
 
   return (
@@ -30,6 +32,7 @@ function ActivityUpload() {
       )}
 
       <Uploader
+        multiple={true}
         listType="picture-text"
         action="/activity/upload"
         name="fileName"
