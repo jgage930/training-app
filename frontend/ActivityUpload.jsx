@@ -7,7 +7,7 @@ function ActivityUpload() {
   return (
     <Uploader
       listType="picture-text"
-      // action="//jsonplaceholder.typicode.com/posts/"
+      action="/activity/upload"
     >
       <Button>Select files...</Button>
     </Uploader>

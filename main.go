@@ -24,6 +24,9 @@ func main() {
 	workoutHandler := api.WorkoutHandler{DB: db}
 	api.WorkoutRouter(&workoutHandler, mux)
 
+	activityHandler := api.ActivityHandler{DB: db}
+	api.ActivityRouter(&activityHandler, mux)
+
 	// Global middleware
 	server := api.LoggingMiddleware(mux)
 	server = api.CorsMiddleware(server)
