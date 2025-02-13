@@ -8,6 +8,7 @@ function ActivityUpload() {
     <Uploader
       listType="picture-text"
       action="/activity/upload"
+      name="fileName"
     >
       <Button>Select files...</Button>
     </Uploader>
