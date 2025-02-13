@@ -26,6 +26,7 @@ func main() {
 
 	// Global middleware
 	server := api.LoggingMiddleware(mux)
+	server = api.CorsMiddleware(server)
 
 	http.ListenAndServe(":8080", server)
 }
