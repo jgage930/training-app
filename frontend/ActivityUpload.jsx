@@ -4,21 +4,37 @@ import React, { useState } from 'react';
 import { Uploader, Button, Message } from 'rsuite';
 
 function ActivityUpload() {
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
+  const handleSuccess = () => {
+    setSuccess(true);
+  }
+
+  const handleError = () => {
+    setError(true);
+  }
+
   return (
     <>
-      <Message type="success">
-        <strong>Success!</strong> Succesfully Uploaded File.
-      </Message>
+      {success && (
+        <Message type="success">
+          <strong>Success!</strong> Succesfully Uploaded File.
+        </Message>
+      )}
 
-      <Message type="error">
-        <strong>Error!</strong> Failed to Upload File.
-      </Message>
-
+      {error && (
+        <Message type="error">
+          <strong>Error!</strong> Failed to Upload File.
+        </Message>
+      )}
 
       <Uploader
         listType="picture-text"
         action="/activity/upload"
         name="fileName"
+        onSuccess={(r, f) => handleSuccess()}
+        onError={(r, f) => handleError()}
       >
         <Button>Select files...</Button>
       </Uploader>
