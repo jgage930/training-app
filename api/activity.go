@@ -1,11 +1,9 @@
 package api
 
 import (
+	"github.com/jmoiron/sqlx"
 	"log"
 	"net/http"
-	"strings"
-
-	"github.com/jmoiron/sqlx"
 )
 
 type ActivityHandler struct {
@@ -33,13 +31,4 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 
 	log.Printf("Uploaded File: %+v\n", handler.Filename)
 	log.Printf("File Size: %+v\n", handler.Size)
-}
-
-func parseFileName(line string) string {
-	token := "filename="
-	i := strings.Index(line, token)
-	start := i + len(token)
-
-	value := string(line[start:])
-	return strings.Trim(value, `"`)
 }
