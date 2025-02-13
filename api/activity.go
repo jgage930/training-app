@@ -35,18 +35,20 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 	log.Printf("Uploaded File: %+v\n", handler.Filename)
 	log.Printf("File Size: %+v\n", handler.Size)
 
-	tempFile, err := os.CreateTemp("../activity_data", handler.Filename)
+	path := "activity_data/" + handler.Filename
+	localFile, err := os.Create(path)
 	if err != nil {
-		log.Printf("Error Creating tempfile: \n%s", err)
+		log.Printf("Error Creating file: \n%s", err)
 		return
 	}
-	defer tempFile.Close()
+	defer localFile.Close()
 
 	fileBytes, err := io.ReadAll(file)
 	if err != nil {
-		log.Printf("Error reading file: \n%s", err)
+		log.Printf("Error Reading file from request: \n%s", err)
 		return
 	}
 
-	tempFile.Write(fileBytes)
+	localFile.Write(fileBytes)
+	localFile.Sync()
 }

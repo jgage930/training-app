@@ -2,3 +2,5 @@ node_modules
 public/assets/*
 .env
 data.db
+activity_data/
+!activity_data/.gitkeep
