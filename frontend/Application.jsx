@@ -3,12 +3,12 @@ import React, { useState } from 'react'
 import { createRoot } from 'react-dom/client';
 
 import Home from './Home';
+import MainView from './MainView'
 
 export default function Application() {
   return (
     <>
-      <div>Application</div>
-      <Home />
+      <MainView />
     </>
   )
 }
