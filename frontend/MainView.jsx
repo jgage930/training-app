@@ -8,18 +8,23 @@ import ArchiveIcon from '@rsuite/icons/Archive';
 
 
 function MainView() {
+  // 1: Calendar
+  // 2: Analyze Workout
+  // 3: Activity Upload
+  const [mode, setMode] = useState("1")
+
   return (
-    <div style={{ width: 240, height: '100vh' }}>
+    <div style={{ width: 240, display: "flex", flexDirection: "column" }}>
       <Sidenav>
         <Sidenav.Body>
-          <Nav activeKey="1">
-            <Nav.Item eventKey="1" icon={<CalenderSimpleIcon />}>
+          <Nav defaultActiveKey="calendar">
+            <Nav.Item eventKey="calendar" icon={<CalenderSimpleIcon />}>
               Calendar
             </Nav.Item>
-            <Nav.Item eventKey="2" icon={<LineChartIcon />}>
+            <Nav.Item eventKey="analyze" icon={<LineChartIcon />}>
               Analyze Workout
             </Nav.Item>
-            <Nav.Item eventKey="3" icon={<ArchiveIcon />}>
+            <Nav.Item eventKey="activity_upload" icon={<ArchiveIcon />}>
               Upload Activities
             </Nav.Item>
           </Nav>
