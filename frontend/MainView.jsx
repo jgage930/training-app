@@ -8,16 +8,14 @@ import ArchiveIcon from '@rsuite/icons/Archive';
 
 
 function MainView() {
-  // 1: Calendar
-  // 2: Analyze Workout
-  // 3: Activity Upload
-  const [mode, setMode] = useState("1")
+  // Application Mode
+  const [mode, setMode] = useState("calendar")
 
   return (
     <div style={{ width: 240, display: "flex", flexDirection: "column" }}>
       <Sidenav>
         <Sidenav.Body>
-          <Nav defaultActiveKey="calendar">
+          <Nav defaultActiveKey="calendar" onSelect={(eventKey => setMode(eventKey))}>
             <Nav.Item eventKey="calendar" icon={<CalenderSimpleIcon />}>
               Calendar
             </Nav.Item>
