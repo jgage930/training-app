@@ -11,8 +11,6 @@ import WorkoutCalendar from './WorkoutCalendar';
 import ActivityUpload from './ActivityUpload';
 import AnalyzeWorkout from './AnalyzeWorkout';
 
-
-
 function MainView() {
   // Application Mode
   const [mode, setMode] = useState("calendar")
@@ -29,24 +27,26 @@ function MainView() {
   }
 
   return (
-    <div style={{ width: 240, display: "flex", flexDirection: "column" }}>
-      <Sidenav>
-        <Sidenav.Body>
-          <Nav defaultActiveKey="calendar" onSelect={(eventKey => setMode(eventKey))}>
-            <Nav.Item eventKey="calendar" icon={<CalenderSimpleIcon />}>
-              Calendar
-            </Nav.Item>
-            <Nav.Item eventKey="analyze" icon={<LineChartIcon />}>
-              Analyze Workout
-            </Nav.Item>
-            <Nav.Item eventKey="upload" icon={<ArchiveIcon />}>
-              Upload Activities
-            </Nav.Item>
-          </Nav>
-        </Sidenav.Body>
-      </Sidenav>
+    <div style={{ display: "flex", flexDirection: "row" }}>
+      <div style={{ width: 240 }}>
+        <Sidenav>
+          <Sidenav.Body>
+            <Nav defaultActiveKey="calendar" onSelect={(eventKey => setMode(eventKey))}>
+              <Nav.Item eventKey="calendar" icon={<CalenderSimpleIcon />}>
+                Calendar
+              </Nav.Item>
+              <Nav.Item eventKey="analyze" icon={<LineChartIcon />}>
+                Analyze Workout
+              </Nav.Item>
+              <Nav.Item eventKey="upload" icon={<ArchiveIcon />}>
+                Upload Activities
+              </Nav.Item>
+            </Nav>
+          </Sidenav.Body>
+        </Sidenav>
+      </div> 
       <div id="content">{renderContent()}</div>
-    </div> 
+    </div>
   )
 }
 
