@@ -1,9 +1,12 @@
 package api
 
 import (
-	"github.com/jmoiron/sqlx"
+	"io"
 	"log"
 	"net/http"
+	"os"
+
+	"github.com/jmoiron/sqlx"
 )
 
 type ActivityHandler struct {
@@ -31,4 +34,19 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 
 	log.Printf("Uploaded File: %+v\n", handler.Filename)
 	log.Printf("File Size: %+v\n", handler.Size)
+
+	tempFile, err := os.CreateTemp("../activity_data", handler.Filename)
+	if err != nil {
+		log.Printf("Error Creating tempfile: \n%s", err)
+		return
+	}
+	defer tempFile.Close()
+
+	fileBytes, err := io.ReadAll(file)
+	if err != nil {
+		log.Printf("Error reading file: \n%s", err)
+		return
+	}
+
+	tempFile.Write(fileBytes)
 }
