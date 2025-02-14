@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/muktihari/fit/decoder"
@@ -14,9 +15,15 @@ type ActivityHandler struct {
 	DB *sqlx.DB
 }
 
+type Activity struct {
+	Id   int       `db:"id" json:"id"`
+	Date time.Time `db:"date" json:"date"`
+	// Need to parse some more data not sure what yet.
+}
+
 func ActivityRouter(h *ActivityHandler, mux *http.ServeMux) {
+	mux.HandleFunc("GET /activity", h.getActivity)
 	mux.HandleFunc("POST /activity/upload", h.uploadActivity)
-	mux.HandleFunc("GET /activity/test", h.tester)
 }
 
 func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request) {
@@ -50,7 +57,8 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 	localFile.Sync()
 }
 
-func (h *ActivityHandler) tester(w http.ResponseWriter, r *http.Request) {
+func (h *ActivityHandler) getActivity(w http.ResponseWriter, r *http.Request) {
+	// file := r.PathValue("file")
 	readFitFile("activity_data/2024-08-26-14-45-27.fit")
 }
 
@@ -75,4 +83,10 @@ func readFitFile(path string) {
 	// We want to track both activity and courses.
 	// message = 4 or 5
 	log.Printf("File Type: %v\n", fit.Messages[5]) //.FieldValueByNum(fieldnum.FileIdType).Any())
+
+	activites := make([]fit.Message, 0)
+	for _, message := range fit.Messages {
+
+	}
+
 }
