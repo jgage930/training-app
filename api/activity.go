@@ -33,6 +33,7 @@ type Message struct {
 
 func ActivityRouter(h *ActivityHandler, mux *http.ServeMux) {
 	mux.HandleFunc("GET /activity", h.listActivities)
+	mux.HandleFunc("GET /activity/{id}", h.getActivityById)
 	mux.HandleFunc("POST /activity/upload", h.uploadActivity)
 }
 
@@ -43,6 +44,17 @@ func (h *ActivityHandler) listActivities(w http.ResponseWriter, r *http.Request)
 	`
 	h.DB.Select(&activities, query)
 	Respond(activities, w)
+}
+
+func (h *ActivityHandler) getActivityById(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	activity := Activity{}
+	query := `
+		SELECT * FROM activities WHERE id = $1;
+	`
+	h.DB.Get(&activity, query, id)
+	Respond(activity, w)
 }
 
 func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request) {
