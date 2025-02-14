@@ -23,18 +23,20 @@ type Activity struct {
 }
 
 type Message struct {
-	Id        int     `db:"id" json:"id"`
-	Distance  float64 `db:"distance" json:"distance"`
-	Latitude  float64 `db:"latitude" json:"latitude"`
-	Longitude float64 `db:"longitude" json:"longitude"`
-	Speed     float64 `db:"speed" json:"speed"`
-	HeartRate uint8   `db:"heart_rate" json:"heart_rate"`
+	Id         int     `db:"id" json:"id"`
+	ActivityId int     `db:"activity_id" json:"activity_id"`
+	Distance   float64 `db:"distance" json:"distance"`
+	Latitude   float64 `db:"latitude" json:"latitude"`
+	Longitude  float64 `db:"longitude" json:"longitude"`
+	Speed      float64 `db:"speed" json:"speed"`
+	HeartRate  uint8   `db:"heart_rate" json:"heart_rate"`
 }
 
 func ActivityRouter(h *ActivityHandler, mux *http.ServeMux) {
 	mux.HandleFunc("GET /activity", h.listActivities)
 	mux.HandleFunc("GET /activity/{id}", h.getActivityById)
 	mux.HandleFunc("POST /activity/upload", h.uploadActivity)
+	mux.HandleFunc("GET /activity/message/{id}", h.getMessagesById)
 }
 
 func (h *ActivityHandler) listActivities(w http.ResponseWriter, r *http.Request) {
@@ -120,6 +122,17 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 	tx.Commit()
 
 	log.Printf("Inserted %v", activity_id)
+}
+
+func (h *ActivityHandler) getMessagesById(w http.ResponseWriter, r *http.Request) {
+	id := r.PathValue("id")
+
+	messages := []Message{}
+	query := `
+		SELECT * FROM activity_messages WHERE activity_id = $1;
+	`
+	h.DB.Select(&messages, query, id)
+	Respond(messages, w)
 }
 
 func readFitFile(path string) Activity {
