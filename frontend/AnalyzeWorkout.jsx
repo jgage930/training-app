@@ -1,8 +1,34 @@
 import 'rsuite/dist/rsuite.min.css';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+
+import { SelectPicker } from 'rsuite'
 
 function AnalyzeWorkout() {
-  return <div>Analyze Workout</div>
+  const [activities, setActivities] = useState([]);
+  
+  const fetchActivities = () => {
+    fetch('/activity', { method: "GET" })
+    .then((response) => {
+      return response.json();
+    })
+    .then((activities) => {
+        setActivities(activities);
+    });
+  }
+
+  useEffect(() => {fetchActivities()}, []);
+
+  const [selectOptions, setSelectOptions] = useState([]);
+  useEffect(() => {
+    const options = activities.map((item) => ({"label": item.file_path, "value": item.id}));
+    setSelectOptions(options);
+  }, [activities]);
+
+  return (
+    <>
+      <SelectPicker data={selectOptions} />
+    </>
+  )
 }
 
 export default AnalyzeWorkout;
