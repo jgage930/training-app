@@ -28,7 +28,7 @@ func createTables(db *sqlx.DB) {
 	db.MustExec(workouts_query)
 
 	activities_query := `
-		CREATE TABLE activities (
+		CREATE TABLE IF NOT EXISTS activities (
     	id INTEGER PRIMARY KEY AUTOINCREMENT,
   		file_path TEXT
 		);
@@ -36,7 +36,7 @@ func createTables(db *sqlx.DB) {
 	db.MustExec(activities_query)
 
 	activity_messages_query := `
-		CREATE TABLE activity_messages (
+		CREATE TABLE IF NOT EXISTS activity_messages (
     	id INTEGER PRIMARY KEY AUTOINCREMENT,
     	activity_id INTEGER NOT NULL,
   		distance REAL,
