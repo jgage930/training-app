@@ -32,8 +32,17 @@ type Message struct {
 }
 
 func ActivityRouter(h *ActivityHandler, mux *http.ServeMux) {
-	mux.HandleFunc("GET /activity", h.getActivity)
+	mux.HandleFunc("GET /activity", h.listActivities)
 	mux.HandleFunc("POST /activity/upload", h.uploadActivity)
+}
+
+func (h *ActivityHandler) listActivities(w http.ResponseWriter, r *http.Request) {
+	activities := []Activity{}
+	query := `
+		SELECT * FROM activities;
+	`
+	h.DB.Select(&activities, query)
+	Respond(activities, w)
 }
 
 func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request) {
@@ -99,12 +108,6 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 	tx.Commit()
 
 	log.Printf("Inserted %v", activity_id)
-}
-
-func (h *ActivityHandler) getActivity(w http.ResponseWriter, r *http.Request) {
-	// file := r.PathValue("file")
-	activity := readFitFile("activity_data/2024-08-26-14-45-27.fit")
-	log.Printf("Parsed %v \n", activity)
 }
 
 func readFitFile(path string) Activity {
