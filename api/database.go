@@ -17,7 +17,7 @@ func SetupDB() *sqlx.DB {
 }
 
 func createTables(db *sqlx.DB) {
-	query := `
+	workouts_query := `
 		CREATE TABLE IF NOT EXISTS workouts (
     	id INTEGER PRIMARY KEY AUTOINCREMENT,
     	name TEXT NOT NULL,
@@ -25,5 +25,27 @@ func createTables(db *sqlx.DB) {
     	description TEXT
 		);
 	`
-	db.MustExec(query)
+	db.MustExec(workouts_query)
+
+	activities_query := `
+		CREATE TABLE activities (
+    	id INTEGER PRIMARY KEY AUTOINCREMENT,
+  		file_path TEXT
+		);
+	`
+	db.MustExec(activities_query)
+
+	activity_messages_query := `
+		CREATE TABLE activity_messages (
+    	id INTEGER PRIMARY KEY AUTOINCREMENT,
+    	activity_id INTEGER NOT NULL,
+  		distance REAL,
+  		latitude REAL,
+  		longitude REAL,
+  		speed REAL,
+  		heart_rate INTEGER,
+    	FOREIGN KEY (activity_id) REFERENCES Activity(id) ON DELETE CASCADE
+		);
+	`
+	db.MustExec(activity_messages_query)
 }

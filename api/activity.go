@@ -65,6 +65,9 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 
 	localFile.Write(fileBytes)
 	localFile.Sync()
+
+	// Parse fit file
+	// add to db
 }
 
 func (h *ActivityHandler) getActivity(w http.ResponseWriter, r *http.Request) {
@@ -102,19 +105,6 @@ func readFitFile(path string) Activity {
 	if !ok {
 		log.Printf("%T is not an Activity File\n", lis.File())
 	}
-
-	log.Printf("File Type: %s\n", file.FileId.Type)
-	log.Printf("Sessions count: %d\n", len(file.Sessions))
-	log.Printf("Laps count: %d\n", len(file.Laps))
-	log.Printf("Records count: %d\n", len(file.Records))
-	i := 100
-	log.Printf("\nSample value of record[%d]:\n", i)
-	log.Printf("  Distance: %g m\n", file.Records[i].DistanceScaled())
-	log.Printf("  Lat: %g degrees\n", file.Records[i].PositionLatDegrees())
-	log.Printf("  Long: %g degrees\n", file.Records[i].PositionLongDegrees())
-	log.Printf("  Speed: %g m/s\n", file.Records[i].SpeedScaled())
-	log.Printf("  HeartRate: %d bpm\n", file.Records[i].HeartRate)
-	log.Printf("  Cadence: %d rpm\n", file.Records[i].Cadence)
 
 	var messages []Message
 	for _, record := range file.Records {
