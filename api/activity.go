@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"github.com/jmoiron/sqlx"
 	"github.com/muktihari/fit/decoder"
@@ -17,9 +16,19 @@ type ActivityHandler struct {
 }
 
 type Activity struct {
-	Id   int       `db:"id" json:"id"`
-	Date time.Time `db:"date" json:"date"`
+	Id       int       `db:"id" json:"id"`
+	FilePath string    `db:"file_path" json:"file_path"`
+	Messages []Message `db:"messages" json:"messges"`
 	// Need to parse some more data not sure what yet.
+}
+
+type Message struct {
+	Id        int     `db:"id" json:"id"`
+	Distance  float64 `db:"distance" json:"distance"`
+	Latitude  float64 `db:"latitude" json:"latitude"`
+	Longitude float64 `db:"longitude" json:"longitude"`
+	Speed     float64 `db:"speed" json:"speed"`
+	HeartRate uint8   `db:"heart_rate" json:"heart_rate"`
 }
 
 func ActivityRouter(h *ActivityHandler, mux *http.ServeMux) {
@@ -60,34 +69,11 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 
 func (h *ActivityHandler) getActivity(w http.ResponseWriter, r *http.Request) {
 	// file := r.PathValue("file")
-	readFitFile("activity_data/2024-08-26-14-45-27.fit")
+	activity := readFitFile("activity_data/2024-08-26-14-45-27.fit")
+	log.Printf("Parsed %v \n", activity)
 }
 
-// func readFitFile(path string) {
-// 	f, err := os.Open(path)
-// 	if err != nil {
-// 		panic(err)
-// 	}
-// 	defer f.Close()
-//
-// 	dec := decoder.New(f)
-//
-// 	fit, err := dec.Decode()
-// 	if err != nil {
-// 		panic(err)
-// 	}
-//
-// 	log.Printf("FileHeader DataSize: %d\n", fit.FileHeader.DataSize)
-// 	log.Printf("Messages count: %d\n", len(fit.Messages))
-// 	// FileId is always the first message; 4 = activity
-//
-// 	// We want to track both activity and courses.
-// 	// message = 4 or 5
-// 	log.Printf("File Type: %v\n", fit.Messages[5]) //.FieldValueByNum(fieldnum.FileIdType).Any())
-//
-// }
-
-func readFitFile(path string) {
+func readFitFile(path string) Activity {
 	f, err := os.Open(path)
 	if err != nil {
 		panic(err)
@@ -115,7 +101,6 @@ func readFitFile(path string) {
 	file, ok := lis.File().(*filedef.Activity)
 	if !ok {
 		log.Printf("%T is not an Activity File\n", lis.File())
-		return
 	}
 
 	log.Printf("File Type: %s\n", file.FileId.Type)
@@ -130,4 +115,24 @@ func readFitFile(path string) {
 	log.Printf("  Speed: %g m/s\n", file.Records[i].SpeedScaled())
 	log.Printf("  HeartRate: %d bpm\n", file.Records[i].HeartRate)
 	log.Printf("  Cadence: %d rpm\n", file.Records[i].Cadence)
+
+	var messages []Message
+	for _, record := range file.Records {
+		message := Message{
+			Id:        0,
+			Distance:  record.DistanceScaled(),
+			Latitude:  record.PositionLatDegrees(),
+			Longitude: record.PositionLongDegrees(),
+			Speed:     record.SpeedScaled(),
+			HeartRate: record.HeartRate,
+		}
+
+		messages = append(messages, message)
+	}
+
+	return Activity{
+		Id:       0,
+		FilePath: path,
+		Messages: messages,
+	}
 }
