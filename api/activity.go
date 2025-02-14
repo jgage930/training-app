@@ -67,7 +67,38 @@ func (h *ActivityHandler) uploadActivity(w http.ResponseWriter, r *http.Request)
 	localFile.Sync()
 
 	// Parse fit file
+	activity := readFitFile(path)
 	// add to db
+	tx := h.DB.MustBegin()
+	result := tx.MustExec(
+		"INSERT INTO activities (file_path) VALUES ($1)",
+		activity.FilePath,
+	)
+
+	activity_id, err := result.LastInsertId()
+	if err != nil {
+		log.Println("Err could not get id.")
+	}
+
+	for _, message := range activity.Messages {
+		tx.MustExec(
+			`
+			INSERT INTO activity_messages 
+				(activity_id, distance, latitude, longitude, speed, heart_rate) 
+			VALUES ($1, $2, $3, $4, $5, $6)
+			`,
+			activity_id,
+			message.Distance,
+			message.Latitude,
+			message.Longitude,
+			message.Speed,
+			message.HeartRate,
+		)
+	}
+
+	tx.Commit()
+
+	log.Printf("Inserted %v", activity_id)
 }
 
 func (h *ActivityHandler) getActivity(w http.ResponseWriter, r *http.Request) {
