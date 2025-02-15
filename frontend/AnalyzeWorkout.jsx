@@ -24,9 +24,19 @@ function AnalyzeWorkout() {
     setSelectOptions(options);
   }, [activities]);
 
+  // Activity Id to diplay analysis for.
+  // const [, ] = useState(null);
+  //
+  // const handleSelect => (value, item) = {
+  //    
+  // }
+
   return (
     <>
-      <SelectPicker data={selectOptions} />
+      <SelectPicker 
+        data={selectOptions} 
+        onSelect={(value, item) => {}}
+      />
     </>
   )
 }
