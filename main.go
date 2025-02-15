@@ -27,6 +27,9 @@ func main() {
 	activityHandler := api.ActivityHandler{DB: db}
 	api.ActivityRouter(&activityHandler, mux)
 
+	statsHandler := api.StatsHandler{DB: db}
+	api.StatsRouter(&statsHandler, mux)
+
 	// Global middleware
 	server := api.LoggingMiddleware(mux)
 	server = api.CorsMiddleware(server)
