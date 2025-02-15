@@ -25,17 +25,19 @@ function AnalyzeWorkout() {
   }, [activities]);
 
   // Activity Id to diplay analysis for.
-  // const [, ] = useState(null);
-  //
-  // const handleSelect => (value, item) = {
-  //    
-  // }
+  const [activityId, setActivityId] = useState(null);
+
+  const handleSelect = (value, item) => {
+    setActivityId(value); 
+  }
+
+  useEffect(() => {console.log(activityId)});
 
   return (
     <>
       <SelectPicker 
         data={selectOptions} 
-        onSelect={(value, item) => {}}
+        onSelect={(value, item) => {handleSelect(value, item)}}
       />
     </>
   )
