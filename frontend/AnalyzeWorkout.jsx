@@ -1,7 +1,7 @@
 import 'rsuite/dist/rsuite.min.css';
 import React, { useState, useEffect } from 'react'
 
-import { SelectPicker } from 'rsuite'
+import { SelectPicker, Panel, Stack, Stat } from 'rsuite'
 
 function ActivityStats({id}) {
   const [stats, setStats] = useState({});
@@ -11,15 +11,59 @@ function ActivityStats({id}) {
     .then((response) => {
       return response.json();
     })
-    .then((activities) => {
-        setActivities(activities);
+    .then((stats) => {
+        setStats(stats);
     });
   }
 
   useEffect(() => { fetchStats() }, [])
 
   return (
+    <Panel header="Activity Stats" bordered>
+      <Stack wrap spacing={20}>
+        <Stat bordered style={{ width: 200 }} >
+          <Stat.Label>Total Distance</Stat.Label>
+          <Stat.Value 
+            value={stats.total_distance}
+            formatOptions={{
+              style: "unit",
+              unit: 'mile'
+            }}
+          />
+        </Stat> 
+        
+        <Stat bordered style={{ width: 200 }}>
+          <Stat.Label>Average Speed</Stat.Label>
+          <Stat.Value 
+            value={stats.average_speed}
+            formatOptions={{
+              style: "unit",
+              unit: 'mile-per-hour'
+            }}
+          />
+        </Stat> 
 
+        <Stat bordered style={{ width: 200 }}>
+          <Stat.Label>Max Speed</Stat.Label>
+          <Stat.Value 
+            value={stats.max_speed}
+            formatOptions={{
+              style: "unit",
+              unit: 'mile-per-hour'
+            }}
+          />
+        </Stat> 
+
+        <Stat bordered style={{ width: 200 }}>
+          <Stat.Label>Average Heart Rate</Stat.Label>
+          <Stat.Value 
+            value={stats.average_heart_rate}
+          />
+        </Stat> 
+      
+
+      </Stack>
+    </Panel>
   )
 }
 
@@ -60,7 +104,7 @@ function AnalyzeWorkout() {
         onSelect={(value, item) => {handleSelect(value, item)}}
       />
       {activityId && (
-        
+        <ActivityStats id={activityId}/>
       )}
     </>
   )
