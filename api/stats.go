@@ -21,7 +21,7 @@ func (h *StatsHandler) getActivityStatsById(w http.ResponseWriter, r *http.Reque
 
 	log.Printf("Calculating %v stats for %v...", name, id)
 
-	var stats Stats
+	var stats ActivityStats
 	switch name {
 	case "activity":
 		stats = activityStatsById(h.DB, id)
@@ -29,6 +29,7 @@ func (h *StatsHandler) getActivityStatsById(w http.ResponseWriter, r *http.Reque
 		http.Error(w, "Stat type not supported", http.StatusBadRequest)
 	}
 
+	Convert(&stats)
 	Respond(stats, w)
 }
 
@@ -39,6 +40,12 @@ type ActivityStats struct {
 	AverageSpeed  float64 `db:"average_speed" json:"average_speed"`
 	MaxSpeed      float64 `db:"max_speed" json:"max_speed"`
 	AvgHeartRate  uint8   `db:"average_heart_rate" json:"average_heart_rate"`
+}
+
+func Convert(stats *ActivityStats) {
+	stats.TotalDistance = ConvertValue(stats.TotalDistance, Meter, Mile)
+	stats.AverageSpeed = ConvertValue(stats.AverageSpeed, MetersPerSecond, MilesPerHour)
+	stats.MaxSpeed = ConvertValue(stats.MaxSpeed, MetersPerSecond, MilesPerHour)
 }
 
 func activityStatsById(db *sqlx.DB, id string) ActivityStats {
