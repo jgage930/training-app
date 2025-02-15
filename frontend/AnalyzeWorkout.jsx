@@ -19,6 +19,7 @@ function ActivityStats({id}) {
   useEffect(() => { fetchStats() }, [])
 
   return (
+
   )
 }
 
