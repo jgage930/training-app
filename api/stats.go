@@ -15,7 +15,7 @@ type ActivityStats struct {
 	TotalDistance float64 `db:"total_distance" json:"total_distance"`
 	AverageSpeed  float64 `db:"average_speed" json:"average_speed"`
 	MaxSpeed      float64 `db:"max_speed" json:"max_speed"`
-	AvgHeartRate  uint8   `db:"avg_heart_rate" json:"avg_heart_rate"`
+	AvgHeartRate  uint8   `db:"average_heart_rate" json:"average_heart_rate"`
 }
 
 func StatsRouter(h *StatsHandler, mux *http.ServeMux) {
@@ -32,9 +32,9 @@ func (h *StatsHandler) getActivityStatsById(w http.ResponseWriter, r *http.Reque
 		`
       SELECT 
 	      Max(distance) total_distance,
-	      AVG(speed) average_speed,
+	      Avg(speed) average_speed,
 	      Max(speed) max_speed,
-	      AVG(heart_rate) average_heart_rate
+	      Avg(heart_rate) average_heart_rate
       FROM activity_messages
       WHERE activity_id = $1
     `,
