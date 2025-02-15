@@ -3,6 +3,25 @@ import React, { useState, useEffect } from 'react'
 
 import { SelectPicker } from 'rsuite'
 
+function ActivityStats({id}) {
+  const [stats, setStats] = useState({});
+
+  const fetchStats = () => {
+    fetch(`/stats/activity/${id}`, { method: "GET" })
+    .then((response) => {
+      return response.json();
+    })
+    .then((activities) => {
+        setActivities(activities);
+    });
+  }
+
+  useEffect(() => { fetchStats() }, [])
+
+  return (
+  )
+}
+
 function AnalyzeWorkout() {
   const [activities, setActivities] = useState([]);
   
@@ -39,6 +58,9 @@ function AnalyzeWorkout() {
         data={selectOptions} 
         onSelect={(value, item) => {handleSelect(value, item)}}
       />
+      {activityId && (
+        
+      )}
     </>
   )
 }
